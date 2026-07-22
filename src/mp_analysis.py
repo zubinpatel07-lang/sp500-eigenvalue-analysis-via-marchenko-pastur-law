@@ -106,17 +106,25 @@ def write_significant_eigenvectors(eigenvalues, eigenvectors, columns, lambda_up
   """Write the top loading tickers for each eigenvalue above the MP upper bound"""
   significant = np.where(eigenvalues > lambda_upper)[0]
 
-  lines = []
+  blocks = []
   for i in significant:
       loadings = pd.Series(eigenvectors[:, i], index=columns)
-      top_stocks = loadings.abs().sort_values(ascending=False).head(top_n)
-      lines.append(
-        f"\nEigenvalue {i} ({eigenvalues[i]:.2f}), "
+
+      #Eigenvectors hold the same information regardless if we * -1
+      #Flip the largest-magnitude loading so it is always positive
+      top_idx = loading.abs.sort_values(assending=False).index
+      if loadings[top_index[0]] < 0:
+        loadings = -loadings
+    
+      top_stocks = loadings.loc[top_index[:top_n]]
+    
+      header = (
+        f"Eigenvalue {i} ({eigenvalues[i]:.2f}), "
         f"min={min(loadings):.4f}, max={max(loadings):.4f}"
       )
-      lines.append(top_stocks.to_string())
+      blocks.append(header + "\n" + top_stocks.to_string())
   
-  text = "\n".join(lines)
+  text = "\n\n".join(blocks)
   print(text)
 
   with open(save_path, "w") as f:
