@@ -107,10 +107,10 @@ def plot_top_eigenvector_loadings(eigenvalues, eigenvectors, columns, eigen_idx,
   loadings = pd.Series(eigenvectors[:, eigen_idx], index=columns)
   
   top_idx = loadings.abs().sort_values(ascending=False).index
-  if loadings[top_index[0]] < 0:
+  if loadings[top_idx[0]] < 0:
     loadings = -loadings
  
-  top_stocks = loadings.loc[top_index[:top_n]]
+  top_stocks = loadings.loc[top_idx[:top_n]]
 
   industry_color_map = build_ticker_industry_color_map()
 
@@ -146,11 +146,11 @@ def write_significant_eigenvectors(eigenvalues, eigenvectors, columns, lambda_up
 
       #Eigenvectors hold the same information regardless if we * -1
       #Flip the largest-magnitude loading so it is always positive
-      top_idx = loadings.abs.sort_values(assending=False).index
-      if loadings[top_index[0]] < 0:
+      top_idx = loadings.abs.sort_values(ascending=False).index
+      if loadings[top_idx[0]] < 0:
         loadings = -loadings
     
-      top_stocks = loadings.loc[top_index[:top_n]]
+      top_stocks = loadings.loc[top_idx[:top_n]]
     
       header = (
         f"Eigenvalue {i} ({eigenvalues[i]:.2f}), "
