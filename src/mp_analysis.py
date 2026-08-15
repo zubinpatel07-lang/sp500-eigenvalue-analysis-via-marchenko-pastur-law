@@ -112,7 +112,7 @@ def write_significant_eigenvectors(eigenvalues, eigenvectors, columns, lambda_up
 
       #Eigenvectors hold the same information regardless if we * -1
       #Flip the largest-magnitude loading so it is always positive
-      top_idx = loading.abs.sort_values(assending=False).index
+      top_idx = loadings.abs.sort_values(assending=False).index
       if loadings[top_index[0]] < 0:
         loadings = -loadings
     
