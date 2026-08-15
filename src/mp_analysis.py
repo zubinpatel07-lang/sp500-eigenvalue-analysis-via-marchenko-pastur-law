@@ -22,7 +22,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.ticker import ScalarFormatter
-from ticker_industry import TICKER_INDUSTRY, build_industry_color_map
+from ticker_industry import TICKER_INDUSTRY, build_ticker_industry_color_map
 
 #Stocks used for an illustration of the correlation heatmap
 #These stocks were chosen as recognizable companies that span many sectors of the market
