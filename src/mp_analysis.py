@@ -22,6 +22,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.ticker import ScalarFormatter
+from ticker_industry import TICKER_INDUSTRY, build_industry_color_map
 
 #Stocks used for an illustration of the correlation heatmap
 #These stocks were chosen as recognizable companies that span many sectors of the market
@@ -64,7 +65,7 @@ def compute_eigendecomposition(correlation: pd.DataFrame) -> tuple[np.ndarray, n
 
 
 def compute_mp_bounds(n_stocks: int, n_days: int) -> tuple[float, float, float]:
-  """Finds Marchenko-Pastur upper and lower bounds for aspect ratio q = N/T. """
+  """Finds Marchenko-Pastur upper and lower bounds for aspect ratio q = N/T"""
   q = n_stocks / n_days
   lambda_upper = (1 + np.sqrt(q))**2
   lambda_lower = (1 - np.sqrt(q))**2
@@ -99,6 +100,39 @@ def plot_eigenvalue_spectrum(eigenvalues, lambda_lower, lambda_upper, save_path:
   plt.legend()
   plt.tight_layout()
   plt.savefig(save_path, dpi=200)
+  plt.close()
+
+def plot_top_eigenvector_loadings(eigenvalues, eigenvectors, columns, eigen_idx, save_path: str, top_n: int = 10):
+  """Bar chart of the top-loading stocks for one eigenvector sorted by highest magnitude"""
+  loadings = pd.Series(eigenvectors[:, i], index=columns)
+  
+  top_idx = loadings.abs.sort_values(assending=False).index
+  if loadings[top_index[0]] < 0:
+    loadings = -loadings
+ 
+  top_stocks = loadings.loc[top_index[:top_n]]
+
+  industry_color_map = build_industry_color_map()
+
+  bar_colors = []
+  for ticker in top_stocks.index:
+    industry = TICKER_INDUSTRY.get(ticker, "Other")
+    color = industry_color_map.get(industry, "grey")
+    bar_colors.append(color)
+
+  plt.figure(figsize=(12, 7))
+  plt.barh(top_stocks.index, top_stocks.values, color=bar_colors)
+  plt.axvline(0, color='black', linewidth=0.8)
+  plt.xlabel('Eigenvector Loading Value')
+  plt.title(f'Top 10 Stocks in Eigenvector {eigen_idx} (Eigenvalue {eigenvalues[eigen_idx]:.2f})', fontsize=14)
+  plt.gca().invert_yaxis()
+
+  present_industries = sorted(list(set(TICKER_INDUSTRY.get(ticker, 'Other') for ticker in top_stocks.index)))
+  handles = [plt.Rectangle((0,0),1,1, color=industry_color_map.get(industry, "grey")) for industry in present_industries]
+  plt.legend(handles, present_industries, title="Industry", bbox_to_anchor=(1.02, 0.95), loc='upper left')
+
+  plt.tight_layout()
+  plt.savefig(save_path, dpi=200, bbox_indches="tight")
   plt.close()
 
 
@@ -160,7 +194,13 @@ def main():
   #5. Figures
   plot_correlation_heatmap(returns, CHOSEN_STOCKS, os.path.join(args.figures_dir, "correlation_heatmap.png"))
   plot_eigenvalue_spectrum(eigenvalues, lambda_lower, lambda_upper, os.path.join(args.figures_dir, "eigenvalue_spectrum.png"))
+  index = 10
+  plot_industry_loadings(eigenvalues, eigenvectors, correlation.columns, index, os.path.join(args.figures_dir, f"industry_loadings_eig{index}.png"))
+  index = 12
+  plot_industry_loadings(eigenvalues, eigenvectors, correlation.columns, index, os.path.join(args.figures_dir, f"industry_loadings_eig{index}.png"))
+  
 
+  
   #6. Significant eigenvectors -> output file
   write_significant_eigenvectors(eigenvalues, eigenvectors, correlation.columns, lambda_upper, os.path.join(args.output_dir, "eigenvector_loadings.txt"))
 
