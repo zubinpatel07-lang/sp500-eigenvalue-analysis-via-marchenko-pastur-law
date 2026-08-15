@@ -85,24 +85,24 @@ TICKER_INDUSTRY = {
 
 def build_ticker_industry_color_map(industries=None):
     """Assigns stock tickers a corresponding industry"""
-  if (industries=None):
-    industries = TICKER_INDUSTRY.values()
+    if industries is None:
+        industries = TICKER_INDUSTRY.values()
 
-  unique_industries = sorted(set(industries))
+    unique_industries = sorted(set(industries))
 
-  all_colors = (list(plt.get_cmap("tab20").colors))
+    all_colors = (list(plt.get_cmap("tab20").colors))
 
-  if len(unique_industries) > len(all_colors):
-    raise ValueError(f"{len(all_colors)} colors for {len(unique_industries)} industries.")
+    if len(unique_industries) > len(all_colors):
+        raise ValueError(f"{len(all_colors)} colors for {len(unique_industries)} industries.")
 
-  colors = all_colors[:len(unique_industries)]
+    colors = all_colors[:len(unique_industries)]
 
-  industry_color_map = {}
-  for i, industry in enumerate(unique_industries):
-    col = colors[i]
-    industry_color_map[industry] = col
-
-  return industry_color_map
+    industry_color_map = {}
+    for i, industry in enumerate(unique_industries):
+        col = colors[i]
+        industry_color_map[industry] = col
+    
+    return industry_color_map
   
     
     
