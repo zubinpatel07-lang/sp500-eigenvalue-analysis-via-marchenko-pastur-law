@@ -195,9 +195,9 @@ def main():
   plot_correlation_heatmap(returns, CHOSEN_STOCKS, os.path.join(args.figures_dir, "correlation_heatmap.png"))
   plot_eigenvalue_spectrum(eigenvalues, lambda_lower, lambda_upper, os.path.join(args.figures_dir, "eigenvalue_spectrum.png"))
   index = 10
-  plot_industry_loadings(eigenvalues, eigenvectors, correlation.columns, index, os.path.join(args.figures_dir, f"industry_loadings_eig{index}.png"))
+  plot_top_eigenvector_loadings(eigenvalues, eigenvectors, correlation.columns, index, os.path.join(args.figures_dir, f"industry_loadings_eig{index}.png"))
   index = 12
-  plot_industry_loadings(eigenvalues, eigenvectors, correlation.columns, index, os.path.join(args.figures_dir, f"industry_loadings_eig{index}.png"))
+  plot_top_eigenvector_loadings(eigenvalues, eigenvectors, correlation.columns, index, os.path.join(args.figures_dir, f"industry_loadings_eig{index}.png"))
   
 
   
