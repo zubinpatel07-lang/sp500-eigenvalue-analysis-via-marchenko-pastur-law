@@ -106,7 +106,7 @@ def plot_top_eigenvector_loadings(eigenvalues, eigenvectors, columns, eigen_idx,
   """Bar chart of the top-loading stocks for one eigenvector sorted by highest magnitude"""
   loadings = pd.Series(eigenvectors[:, eigen_idx], index=columns)
   
-  top_idx = loadings.abs.sort_values(assending=False).index
+  top_idx = loadings.abs().sort_values(assending=False).index
   if loadings[top_index[0]] < 0:
     loadings = -loadings
  
