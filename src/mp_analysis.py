@@ -132,7 +132,7 @@ def plot_top_eigenvector_loadings(eigenvalues, eigenvectors, columns, eigen_idx,
   plt.legend(handles, present_industries, title="Industry", bbox_to_anchor=(1.02, 0.95), loc='upper left')
 
   plt.tight_layout()
-  plt.savefig(save_path, dpi=200, bbox_indches="tight")
+  plt.savefig(save_path, dpi=200, bbox_inches="tight")
   plt.close()
 
 
