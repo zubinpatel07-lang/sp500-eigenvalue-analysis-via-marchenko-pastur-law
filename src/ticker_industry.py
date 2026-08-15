@@ -84,6 +84,7 @@ TICKER_INDUSTRY = {
 }
 
 def build_ticker_industry_color_map(industries=None):
+    """Assigns stock tickers a corresponding industry"""
   if industries is None:
     industries = TICKER_INDUSTRY.values()
 
