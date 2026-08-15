@@ -112,7 +112,7 @@ def plot_top_eigenvector_loadings(eigenvalues, eigenvectors, columns, eigen_idx,
  
   top_stocks = loadings.loc[top_index[:top_n]]
 
-  industry_color_map = build_industry_color_map()
+  industry_color_map = build_ticker_industry_color_map()
 
   bar_colors = []
   for ticker in top_stocks.index:
