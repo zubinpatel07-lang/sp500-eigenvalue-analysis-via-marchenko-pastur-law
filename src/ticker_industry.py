@@ -9,6 +9,8 @@ GICS defines 11 sectors total and all 11 are respresented in this dictionary.
 (The tickers only include a subset of stocks in the entire dataset.)
 """
 
+import matplotlib.pyplot as plt
+
 TICKER_INDUSTRY = {
     "LUV": "Industrials", "AAL": "Industrials", "ALK": "Industrials",
     "UAL": "Industrials", "DAL": "Industrials",
