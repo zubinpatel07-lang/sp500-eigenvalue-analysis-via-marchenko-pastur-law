@@ -145,7 +145,7 @@ def plot_eigenportfolio_performance_vs_stocks(returns: pd.DataFrame, eigenvector
   eigenportfolio_returns = returns.dot(portfolio_weights)
   cumulative_eigenportfolio_returns = np.exp(eigenportfolio_returns.cumsum())
 
-rolling_3day_returns = returns(stocks_to_plot).rolling(3).sum()
+rolling_3day_returns = returns[stocks_to_plot].rolling(3).sum()
 combined_3day_returns = rolling_3day_returns.sum(axis=1)
 
 top_drop_dates = combined_3day_returns.nsmallest(top_n).index.tolist()
