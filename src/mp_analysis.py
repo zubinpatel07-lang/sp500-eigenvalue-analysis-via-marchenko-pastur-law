@@ -195,10 +195,10 @@ def plot_eigenportfolio_performance_vs_stocks(returns: pd.DataFrame, eigenvector
 
   for stock in stocks_to_plot:
     if stock in returns.columns:
-      cumulative_returns = np.exp(prices[stock].cumsum())
+      cumulative_returns = np.exp(returns[stock].cumsum())
       plt.plot(cumulative_returns.index, cumulative_returns, label=stock, linewidth=1)
     else:
-      print(f"Stock {stock} not found in the prices DataFrame.")
+      print(f"Stock {stock} not found in the returns DataFrame.")
 
   plt.plot(cumulative_eigenportfolio_returns.index, cumulative_eigenportfolio_returns, label=f'Eigenportfolio (Eigenvalue Index {eigenvector_index})', linewidth=2, color='purple')
 
