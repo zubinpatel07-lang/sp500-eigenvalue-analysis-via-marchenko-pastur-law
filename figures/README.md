@@ -7,6 +7,8 @@ cd .../src
 python mp_analysis.py --data ../data/all_stocks_5yr.csv
 ```
 
+To customize which eigenvectors or stocks are plotted, see the command-line options table in the main `README.md`.
+
 ## Contents
 
 - **`correlation_heatmap.png`** - Pearson correlation matrices for a small subset of stocks spanning consumer staples (KO, PEP, MDLZ), tech (AAPL, MSFT, GOOGL), and energy (XOM, CVX), so all correlation is visible.
