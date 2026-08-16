@@ -194,7 +194,7 @@ def plot_eigenportfolio_performance_vs_stocks(returns: pd.DataFrame, eigenvector
   plt.figure(figsize=(10, 6))
 
   for stock in stocks_to_plot:
-    if stock in prices.columns:
+    if stock in returns.columns:
       cumulative_returns = np.exp(prices[stock].cumsum())
       plt.plot(cumulative_returns.index, cumulative_returns, label=stock, linewidth=1)
     else:
