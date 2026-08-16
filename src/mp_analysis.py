@@ -281,7 +281,9 @@ def main():
   plot_eigenvalue_spectrum(eigenvalues, lambda_lower, lambda_upper, os.path.join(args.figures_dir, "eigenvalue_spectrum.png"))
   for index in args.industry_eigenvectors:
     plot_top_eigenvector_loadings(eigenvalues, eigenvectors, correlation.columns, index, os.path.join(args.figures_dir, f"eigenvector_{index}_chart.png"))
-  plot_eigenportfolio_performance_vs_stocks(returns, eigenvectors, args.eigenportfolio_index, args.eigenportfolio_stocks, os.path.join(args.figures_dir, f"eigenportfolio_{args.eigenportfolio_index}_vs_{args.eigenportfolio_stocks}_performance.png"))
+
+  stocks_str = "_".join(args.eigenportfolio_stock)
+  plot_eigenportfolio_performance_vs_stocks(returns, eigenvectors, args.eigenportfolio_index, args.eigenportfolio_stocks, os.path.join(args.figures_dir, f"eigenportfolio_{args.eigenportfolio_index}_vs_{stocks_str}_performance.png"))
 
   #6. Significant eigenvectors -> output file
   write_significant_eigenvectors(eigenvalues, eigenvectors, correlation.columns, lambda_upper, os.path.join(args.output_dir, "eigenvector_loadings.txt"))
