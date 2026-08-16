@@ -254,7 +254,7 @@ def main():
   parser.add_argument("--output-dir", default="../output")
   parser.add_argument("--industry-eigenvectors", nargs="+", type=int, default=[10, 12], help="Eigenvector indicies to plot bar chart of eigenvector components")
   parser.add_argument("--eigenportfolio-index", type=int, default=10, help="Eigenpair index to build the eigenportfolio from")
-  parser.add_argument("--eigenportfolio-stocks", nargs="+", default=["LEN", "MHK", "NWK"], help="Individual stocks to plot the eigenportfolio against")
+  parser.add_argument("--eigenportfolio-stocks", nargs="+", default=["LEN", "MHK", "NWL"], help="Individual stocks to plot the eigenportfolio against")
     
   args = parser.parse_args()
 
