@@ -37,7 +37,7 @@ def load_and_preprocess(csv_path: str) -> pd.DataFrame:
   - Drops tickers with more then 10 missing days, then linearly interpolates the remaining gaps
   - Converts price to log-returns
   """
-  stock_file = pd.read_csv(csv_path)
+  stock_file = pd.read_csv(csv_path, parse_dates=["date"])
   stock_file.drop(columns=["open", "high", "low", "volume"], inplace=True)
 
   prices = stock_file.pivot(index='date', columns='Name', values='close')
