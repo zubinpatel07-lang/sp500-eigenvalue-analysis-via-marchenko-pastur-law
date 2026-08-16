@@ -57,7 +57,7 @@ def compute_correlation(returns: pd.DataFrame) -> pd.DataFrame:
 
 def compute_eigendecomposition(correlation: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
   """Takes the eigenvalues of the correlation matrix
-  Returns eigenvalues sorted decending and eigenvalues sorted identically. 
+  Returns eigenvalues sorted decending and eigenvalues sorted identically 
   """
   eigenvalues, eigenvectors = np.linalg.eigh(correlation)
   eigenvalues = eigenvalues[::-1]
@@ -85,7 +85,7 @@ def plot_correlation_heatmap(returns: pd.DataFrame, tickers, save_path: str):
 
 
 def plot_eigenvalue_spectrum(eigenvalues, lambda_lower, lambda_upper, save_path: str):
-  """Show the full eigenvalue spectrum against the MP noise band"""
+  """Shows the full eigenvalue spectrum against the MP noise band"""
   plt.figure(figsize=(12, 5))
   plt.plot(eigenvalues, marker='o', markersize=3, linewidth=0.5)
   plt.axhline(y=lambda_upper, color='green', linestyle='--', label=f'MP bound λ+ = {lambda_upper:.2f}')
@@ -137,9 +137,7 @@ def plot_top_eigenvector_loadings(eigenvalues, eigenvectors, columns, eigen_idx,
   plt.close()
 
 def plot_eigenportfolio_performance_vs_stocks(returns: pd.DataFrame, eigenvectors, eigenvector_index: int, stocks_to_plot, save_path: str, top_n: int = 15, intermediate_day_threshold: int = 8):
-  """
-  Plots eigenportfolio performance against individual stocks, noting dates of significant 3-day moves in these stocks. 
-  """
+  """Plots eigenportfolio performance against individual stocks, noting dates of significant 3-day moves in these stocks."""
   
   portfolio_weights = eigenvectors[:, eigenvector_index]
   eigenportfolio_returns = returns.dot(portfolio_weights)
