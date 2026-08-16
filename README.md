@@ -46,7 +46,7 @@ All arguments are optional. To see the full list of arguments: `python mp_analys
 | `--data` | `../data/all_stocks_5yr.csv` | Path to the input CSV (see `data/README.md`) |
 | `--figures-dir` | `../figures` | Where .png files are saved |
 | `--output-dir` | `../output` | Where `eigenvector_loadings.txt` is saved |
-| `--eigenvectors-index` | `10 12` | One or more eigenvector indices to plot bar chart of top components |
+| `--eigenvectors-index` | `10 12` | Eigenvector indicies to plot bar chart of eigenvector components |
 | `--eigenportfolio-index` | `10` | Eigenvector index used to build the eigenportfolio |
 | `--eigenportfolio-stocks` | `LEN MHK NWL` | One or more tickers to plot against the eigenportfolio |
 
