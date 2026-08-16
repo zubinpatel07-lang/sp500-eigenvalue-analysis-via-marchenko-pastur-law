@@ -166,7 +166,7 @@ def plot_eigenportfolio_performance_vs_stocks(returns: pd.DataFrame, eigenvector
         current_group.append(date)
       else:
         grouped_significant_dates.append(current_group)
-        current_group.append(date)
+        current_group = [date]
 
   if current_group:
     grouped_significant_dates.append(current_group)
