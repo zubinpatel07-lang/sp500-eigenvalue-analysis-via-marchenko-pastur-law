@@ -152,7 +152,7 @@ def plot_eigenportfolio_performance_vs_stocks(returns: pd.DataFrame, eigenvector
   top_incline_dates = combined_3day_returns.nlargest(top_n).index.tolist()
 
   all_significant_dates_raw = top_drop_dates + top_incline_dates
-  all_significant_dates = pd.to_datatime(all_significant_dates_raw).dropduplicates().sort_values().tolist()
+  all_significant_dates = pd.to_datetime(all_significant_dates_raw).dropduplicates().sort_values().tolist()
 
   grouped_significant_dates = []
   current_group = []
