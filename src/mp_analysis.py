@@ -125,7 +125,7 @@ def plot_top_eigenvector_loadings(eigenvalues, eigenvectors, columns, eigen_idx,
   plt.barh(top_stocks.index, top_stocks.values, color=bar_colors)
   plt.axvline(0, color='black', linewidth=0.8)
   plt.xlabel('Eigenvector Loading Value')
-  plt.title(f'Top 10 Stocks in Eigenvector {eigen_idx} (Eigenvalue {eigenvalues[eigen_idx]:.2f})', fontsize=14)
+  plt.title(f'Top {top_n} Stocks in Eigenvector {eigen_idx} (Eigenvalue {eigenvalues[eigen_idx]:.2f})', fontsize=14)
   plt.gca().invert_yaxis()
 
   present_industries = sorted(list(set(TICKER_INDUSTRY.get(ticker, 'Other') for ticker in top_stocks.index)))
@@ -251,7 +251,7 @@ def main():
   parser.add_argument("--figures-dir", default="../figures")
   parser.add_argument("--output-dir", default="../output")
   parser.add_argument("--eigenvectors-index", nargs="+", type=int, default=[10, 12], help="Eigenvector indicies to plot bar chart of eigenvector components")
-  parser.add_argument("--eigenportfolio-index", type=int, default=10, help="	Eigenvector index used to build the eigenportfolio")
+  parser.add_argument("--eigenportfolio-index", type=int, default=10, help="Eigenvector index used to build the eigenportfolio")
   parser.add_argument("--eigenportfolio-stocks", nargs="+", default=["LEN", "MHK", "NWL"], help="One or more tickers to plot against the eigenportfolio")
     
   args = parser.parse_args()
@@ -279,10 +279,10 @@ def main():
   #5. Figures
   plot_correlation_heatmap(returns, CHOSEN_STOCKS, os.path.join(args.figures_dir, "correlation_heatmap.png"))
   plot_eigenvalue_spectrum(eigenvalues, lambda_lower, lambda_upper, os.path.join(args.figures_dir, "eigenvalue_spectrum.png"))
-  for index in args.industry_eigenvectors:
+  for index in args.eigenvectors_index:
     plot_top_eigenvector_loadings(eigenvalues, eigenvectors, correlation.columns, index, os.path.join(args.figures_dir, f"eigenvector_{index}_chart.png"))
 
-  stocks_str = "_".join(args.eigenportfolio_stock)
+  stocks_str = "_".join(args.eigenportfolio_stocks)
   plot_eigenportfolio_performance_vs_stocks(returns, eigenvectors, args.eigenportfolio_index, args.eigenportfolio_stocks, os.path.join(args.figures_dir, f"eigenportfolio_{args.eigenportfolio_index}_vs_{stocks_str}_performance.png"))
 
   #6. Significant eigenvectors -> output file
