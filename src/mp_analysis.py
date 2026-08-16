@@ -144,80 +144,79 @@ def plot_eigenportfolio_performance_vs_stocks(returns: pd.DataFrame, eigenvector
   portfolio_weights = eigenvectors[:, eigenvector_index]
   eigenportfolio_returns = returns.dot(portfolio_weights)
   cumulative_eigenportfolio_returns = np.exp(eigenportfolio_returns.cumsum())
+  
+  rolling_3day_returns = returns[stocks_to_plot].rolling(3).sum()
+  combined_3day_returns = rolling_3day_returns.sum(axis=1)
 
-rolling_3day_returns = returns[stocks_to_plot].rolling(3).sum()
-combined_3day_returns = rolling_3day_returns.sum(axis=1)
+  top_drop_dates = combined_3day_returns.nsmallest(top_n).index.tolist()
+  top_incline_dates = combined_3day_returns.nlargest(top_n).index.tolist()
 
-top_drop_dates = combined_3day_returns.nsmallest(top_n).index.tolist()
-top_incline_dates = combined_3day_returns.nlargest(top_n).index.tolist()
+  all_significant_dates_raw = top_drop_dates + top_incline_dates
+  all_significant_dates = pd.to_datatime(all_significant_dates_raw).dropduplicates().sort_values().tolist()
 
-all_significant_dates_raw = top_drop_dates + top_incline_dates
-all_significant_dates = pd.to_datatime(all_significant_dates_raw).dropduplicates().sort_values().tolist()
+  grouped_significant_dates = []
+  current_group = []
 
-
-grouped_significant_dates = []
-current_group = []
-
-for date in all_significant_dates:
-  if not current_group:
-    current_group.append(date)
-  else:
-    last_date_in_group = current_group[-1]
-    if (date - last_date_in_group).days <= intermediate_day_threshold:
+  for date in all_significant_dates:
+    if not current_group:
       current_group.append(date)
     else:
-      grouped_significant_dates.append(current_group)
-      current_group.append(date)
+      last_date_in_group = current_group[-1]
+      if (date - last_date_in_group).days <= intermediate_day_threshold:
+        current_group.append(date)
+      else:
+        grouped_significant_dates.append(current_group)
+        current_group.append(date)
 
-if current_group:
-  grouped_significant_dates.append(current_group)
+  if current_group:
+    grouped_significant_dates.append(current_group)
 
-new_tick_positions = []
-new_tick_labels = []
-tick_colors = []
+  new_tick_positions = []
+  new_tick_labels = []
+  tick_colors = []
 
-for group in grouped_significant_dates:
-  contains_drops = any(d in top_drop_dates for d in group)
-  contains_incline = any(d in top_incline_dates for d in group)
+  for group in grouped_significant_dates:
+    contains_drops = any(d in top_drop_dates for d in group)
+    contains_incline = any(d in top_incline_dates for d in group)
 
-  if contains_drops and contains_incline:
-    continue
-  if contains_drops:
-    current_tick_color = "red" 
-  else:
-    current_tick_color = "green"
+    if contains_drops and contains_incline:
+      continue
+    if contains_drops:
+      current_tick_color = "red" 
+    else:
+      current_tick_color = "green"
 
-  new_tick_positions.append(group[0])
-  new_tick_labels.append(f'{group[0].strftime("%m/%d/%Y")} ({len(group) * 3}d)')
-  tick_colors.append(current_tick_color)
+    new_tick_positions.append(group[0])
+    new_tick_labels.append(f'{group[0].strftime("%m/%d/%Y")} ({len(group) * 3}d)')
+    tick_colors.append(current_tick_color)
 
 
-plt.figure(figsize=(10, 6))
+  plt.figure(figsize=(10, 6))
 
-for stock in stocks_to_plot:
+  for stock in stocks_to_plot:
     if stock in prices.columns:
-        cumulative_returns = np.exp(prices[stock].cumsum())
-        plt.plot(cumulative_returns.index, cumulative_returns, label=stock, linewidth=1)
+      cumulative_returns = np.exp(prices[stock].cumsum())
+      plt.plot(cumulative_returns.index, cumulative_returns, label=stock, linewidth=1)
     else:
-        print(f"Stock {stock} not found in the prices DataFrame.")
+      print(f"Stock {stock} not found in the prices DataFrame.")
 
-plt.plot(cumulative_eigenportfolio_returns.index, cumulative_eigenportfolio_returns, label=f'Eigenportfolio (Eigenvalue Index {eigenvector_index})', linewidth=2, color='purple')
+  plt.plot(cumulative_eigenportfolio_returns.index, cumulative_eigenportfolio_returns, label=f'Eigenportfolio (Eigenvalue Index {eigenvector_index})', linewidth=2, color='purple')
 
-plt.title('Stock and Eigenportfolio Performance (Significant Declines and Inclines)', fontsize=16)
-plt.xlabel('Date', fontsize=12)
-plt.ylabel('Indexed Value (Base 1 at start)', fontsize=12)
-plt.legend(fontsize='large')
-plt.grid(True)
+  plt.title('Stock and Eigenportfolio Performance (Significant Declines and Inclines)', fontsize=16)
+  plt.xlabel('Date', fontsize=12)
+  plt.ylabel('Indexed Value (Base 1 at start)', fontsize=12)
+  plt.legend(fontsize='large')
+  plt.grid(True)
 
-plt.xticks(mdates.date2num(new_tick_positions), new_tick_labels, rotation=60, ha='right', fontsize=10)
+  plt.xticks(mdates.date2num(new_tick_positions), new_tick_labels, rotation=60, ha='right', fontsize=10)
 
-ax = plt.gca()
-for i, tick_label in enumerate(ax.get_xticklabels()):
+  ax = plt.gca()
+  for i, tick_label in enumerate(ax.get_xticklabels()):
     tick_label.set_color(tick_colors[i])
 
-plt.tight_layout()
-plt.savefig(save_path, dpi=200)
-plt.close()
+  plt.tight_layout()
+  plt.savefig(save_path, dpi=200)
+  plt.close()
 
 
 def write_significant_eigenvectors(eigenvalues, eigenvectors, columns, lambda_upper: float, save_path: str, top_n: int=15):
