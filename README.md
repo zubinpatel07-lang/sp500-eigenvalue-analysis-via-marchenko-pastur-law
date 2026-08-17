@@ -4,7 +4,7 @@ This is an application of the Random Matrix Theory on the correlation matrix of 
 
 ## Overview
 
-Given `N` stocks observed over `T` trading days, a correlation matrix estimated from this finite sample will inherently contain noise. The **Marchenko-Pastur (MP) law** describes the eigenvalue distribution expected from the covariance matrix of a random data matrix with aspect `q = N/T`. Any eigenvalue of the observed correlation matrix that falls **above** the MP upper bound `λ+` seems to be the result of correlation arising for a reason. More insight into why the eigenvalues below `λ-` are discarded, why the top loadings in eigenvectors should be correlated and economic interpretations of each eigenpair can be found at the associated paper: {coming soon}.
+Given `N` stocks observed over `T` trading days, a correlation matrix estimated from this finite sample will inherently contain noise. The **Marchenko-Pastur (MP) law** describes the eigenvalue distribution expected from the covariance matrix of a random data matrix with aspect `q = N/T`. Any eigenvalue of the observed correlation matrix that falls **above** the MP upper bound `λ+` seems to be the result of correlation arising for a reason. More insight into why the eigenvalues below `λ-` are discarded, why the top loadings in eigenvectors should be correlated and economic interpretations of each eigenpair can be found at the associated paper: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7296838.
 
 This project:
 1. Builds a correlation matrix from ~5 years of daily log returns for 474 S&P 500 stocks.
